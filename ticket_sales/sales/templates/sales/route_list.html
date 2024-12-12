@@ -8,23 +8,26 @@
     <thead>
         <tr>
             <th>Вид транспорта</th>
-            <th>Дата отправления</th>
+            <th>Пункт отправления</th>
             <th>Пункт назначения</th>
-            <th>Свободных мест</th>
-            <th>Действия</th>
+            <th>Дата отправления</th>
+            <th>Мест</th>
+            <th>Цена</th>
         </tr>
     </thead>
     <tbody>
         {% for route in routes %}
-        <tr>
-            <td>{{ route.transport_type }}</td>
-            <td>{{ route.departure_date }}</td>
+          <tr>
+            <td>{{ route.transport_type.name }}</td>
+            <td>{{ route.departure_location }}</td>
             <td>{{ route.destination }}</td>
+            <td>{{ route.departure_date }} {{ route.departure_time}} - {{ route.arrival_date}} {{ route.arrival_time }}</td>
             <td>{{ route.available_seats }}</td>
+            <td>{{ route.price }} руб.</td>
             <td>
                 <a href="{% url 'purchase_ticket' route.id %}" class="btn btn-primary btn-sm">Купить билет</a>
             </td>
-        </tr>
+          </tr>
         {% endfor %}
     </tbody>
 </table>
