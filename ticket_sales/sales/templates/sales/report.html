@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Отчет по продажам{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Отчет по продажам</h1>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Вид транспорта</th>
+            <th>Количество проданных билетов</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in tickets_by_transport %}
+        <tr>
+            <td>{{ item.route__transport_type__name }}</td>
+            <td>{{ item.total }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

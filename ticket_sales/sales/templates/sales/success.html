@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Успешная покупка{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Успешная покупка!</h1>
+<div class="alert alert-success" role="alert">
+    Ваш билет успешно оформлен. Спасибо за покупку!
+</div>
+<a href="/api/routes/" class="btn btn-primary">Вернуться к списку рейсов</a>
+{% endblock %}
