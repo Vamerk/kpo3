@@ -21,10 +21,11 @@ def purchase_ticket(request, route_id):
                 passport_series=form.cleaned_data['passport_series'],
                 passport_number=form.cleaned_data['passport_number']
             )
-            Ticket.objects.create(route=route, client=client)
+            ticket = Ticket.objects.create(route=route, client=client)
             route.available_seats -= 1
             route.save()
-            return redirect('success')
+            # Передаем ticket.id в redirect
+            return redirect('success', ticket_id=ticket.id)
     else:
         form = TicketPurchaseForm()
     return render(request, 'sales/purchase_ticket.html', {'form': form, 'route': route})
