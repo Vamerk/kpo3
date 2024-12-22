@@ -29,8 +29,10 @@ def purchase_ticket(request, route_id):
         form = TicketPurchaseForm()
     return render(request, 'sales/purchase_ticket.html', {'form': form, 'route': route})
 
-def success(request):
-    return render(request, 'sales/success.html')
+def success(request, ticket_id):
+    ticket = get_object_or_404(Ticket, id=ticket_id)
+    route = get_object_or_404(Route, id=ticket.route.id)
+    return render(request, 'sales/success.html', {'ticket': ticket, 'route': route})
 
 def report(request):
     # Инициализация формы фильтрации
