@@ -3,32 +3,38 @@
 {% block title %}Список рейсов{% endblock %}
 
 {% block content %}
-<h1 class="mb-4">Список рейсов</h1>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Вид транспорта</th>
-            <th>Пункт отправления</th>
-            <th>Пункт назначения</th>
-            <th>Дата отправления-прибытия</th>
-            <th>Мест</th>
-            <th>Цена</th>
-        </tr>
-    </thead>
-    <tbody>
+<div class="container mt-5">
+    <h1 class="mb-4 text-center text-primary">
+        <i class="bi bi-airplane"></i> Список рейсов
+    </h1>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         {% for route in routes %}
-          <tr>
-            <td>{{ route.transport_type.name }}</td>
-            <td>{{ route.departure_location }}</td>
-            <td>{{ route.destination }}</td>
-            <td>{{ route.departure_date }} {{ route.departure_time}} - {{ route.arrival_date}} {{ route.arrival_time }}</td>
-            <td>{{ route.available_seats }}</td>
-            <td>{{ route.price }} руб.</td>
-            <td>
-                <a href="{% url 'purchase_ticket' route.id %}" class="btn btn-primary btn-sm">Купить билет</a>
-            </td>
-          </tr>
+            <div class="col">
+                <div class="card shadow-sm h-100 bg-light border-primary">
+                    <div class="card-body">
+                        <h5 class="card-title text-uppercase text-primary">
+                            <i class="bi bi-truck"></i> {{ route.transport_type.name }}
+                        </h5>
+                        <ul class="list-unstyled">
+                            <li><strong><i class="bi bi-arrow-right-circle"></i> Отправление:</strong> {{ route.departure_location }}</li>
+                            <li><strong><i class="bi bi-arrow-left-circle"></i> Назначение:</strong> {{ route.destination }}</li>
+                            <li>
+                                <strong><i class="bi bi-calendar3"></i> Дата:</strong>
+                                {{ route.departure_date }} {{ route.departure_time }} -
+                                {{ route.arrival_date }} {{ route.arrival_time }}
+                            </li>
+                            <li><strong><i class="bi bi-person-check"></i> Места:</strong> {{ route.available_seats }}</li>
+                            <li><strong><i class="bi bi-currency-ruble"></i> Цена:</strong> {{ route.price }} руб.</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer text-center bg-light">
+                        <a href="{% url 'purchase_ticket' route.id %}" class="btn btn-success w-100">
+                            <i class="bi bi-ticket-perforated"></i> Купить билет
+                        </a>
+                    </div>
+                </div>
+            </div>
         {% endfor %}
-    </tbody>
-</table>
+    </div>
+</div>
 {% endblock %}
