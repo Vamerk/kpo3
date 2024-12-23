@@ -56,7 +56,16 @@ def report(request):
     # Группировка по типу транспорта
     tickets_by_transport = tickets.values('route__transport_type__name').annotate(total=Count('id'))
 
+    # Группировка по пунктам назначения и видам транспорта
+    popular_destinations = tickets.values(
+        'route__destination',  # Используем поле destination напрямую
+        'route__transport_type__name'
+    ).annotate(
+        total=Count('id')
+    ).order_by('-total')
+
     return render(request, 'sales/report.html', {
         'form': form,
         'tickets_by_transport': tickets_by_transport,
+        'popular_destinations': popular_destinations,
     })

@@ -10,26 +10,27 @@
     <form method="get" class="card p-4 shadow-sm mb-5 bg-light">
         <div class="row g-3 align-items-end">
             <!-- Отображение полей фильтрации -->
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <label for="filter1" class="form-label">Выберите транспорт</label>
                 {{ form.transport_type }}
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <label for="filter2" class="form-label">Дата начала</label>
                 {{ form.start_date }}
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <label for="filter3" class="form-label">Дата окончания</label>
                 {{ form.end_date }}
             </div>
-            <div class="col-md-6">
+            <div class="col-12">
                 <button type="submit" class="btn btn-primary w-100">Применить фильтры</button>
             </div>
         </div>
     </form>
 
-    <!-- Таблица отчета -->
-    <div class="table-responsive">
+    <!-- Таблица отчета по видам транспорта -->
+    <div class="table-responsive mb-5">
+        <h2 class="mb-3 text-secondary">Количество проданных билетов по видам транспорта</h2>
         <table class="table table-hover table-bordered align-middle">
             <thead class="table-primary">
                 <tr>
@@ -46,6 +47,33 @@
                 {% empty %}
                 <tr>
                     <td colspan="2" class="text-center text-muted">Нет данных для отображения</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Таблица отчета по популярным пунктам назначения -->
+    <div class="table-responsive">
+        <h2 class="mb-3 text-secondary">Популярные пункты назначения и виды транспорта</h2>
+        <table class="table table-hover table-bordered align-middle">
+            <thead class="table-success">
+                <tr>
+                    <th class="text-center">Пункт назначения</th>
+                    <th class="text-center">Вид транспорта</th>
+                    <th class="text-center">Количество билетов</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in popular_destinations %}
+                <tr>
+                    <td class="text-center">{{ item.route__destination }}</td>
+                    <td class="text-center">{{ item.route__transport_type__name }}</td>
+                    <td class="text-center">{{ item.total }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="text-center text-muted">Нет данных для отображения</td>
                 </tr>
                 {% endfor %}
             </tbody>
