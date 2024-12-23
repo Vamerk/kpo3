@@ -3,27 +3,51 @@
 {% block title %}Купить билет{% endblock %}
 
 {% block content %}
-<h1 class="mb-4">Купить билет</h1>
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title">Рейс: {{ route.transport_type }} — {{ route.destination }}</h5>
-        <p class="card-text">Дата отправления: {{ route.departure_date }}</p>
-        <p class="card-text">Свободных мест: {{ route.available_seats }}</p>
+<h1 class="mb-4 text-center display-4 fw-bold text-primary">Купить билет</h1>
+<div class="card shadow-lg rounded-4 border-0">
+    <div class="card-body p-4">
+        <div class="d-flex align-items-center mb-4">
+            <i class="bi bi-airplane-fill text-primary me-3" style="font-size: 2.5rem;"></i>
+            <div>
+                <h5 class="card-title text-primary mb-1">
+                    Рейс: {{ route.transport_type }} — {{ route.destination }}
+                </h5>
+                <p class="card-text text-muted mb-0">
+                    <i class="bi bi-calendar-event me-2"></i> Дата отправления: {{ route.departure_date }}
+                </p>
+                <p class="card-text text-muted mb-0">
+                    <i class="bi bi-people-fill me-2"></i> Свободных мест: {{ route.available_seats }}
+                </p>
+            </div>
+        </div>
+        <hr class="my-4">
         <form method="post" class="mt-3">
             {% csrf_token %}
-            <div class="mb-3">
-                <label for="full_name" class="form-label">ФИО</label>
-                <input type="text" name="full_name" id="full_name" class="form-control" required>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="full_name" class="form-label">
+                        <i class="bi bi-person-fill me-2"></i> ФИО
+                    </label>
+                    <input type="text" name="full_name" id="full_name" class="form-control" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="passport_series" class="form-label">
+                        <i class="bi bi-credit-card-2-front-fill me-2"></i> Серия паспорта
+                    </label>
+                    <input type="number" name="passport_series" id="passport_series" class="form-control" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="passport_number" class="form-label">
+                        <i class="bi bi-credit-card-2-front-fill me-2"></i> Номер паспорта
+                    </label>
+                    <input type="number" name="passport_number" id="passport_number" class="form-control" required>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="passport_series" class="form-label">Серия паспорта</label>
-                <input type="number" name="passport_series" id="passport_series" class="form-control" required>
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-success btn-lg rounded-pill">
+                    <i class="bi bi-bag-check-fill me-2"></i> Купить билет
+                </button>
             </div>
-            <div class="mb-3">
-                <label for="passport_number" class="form-label">Номер паспорта</label>
-                <input type="number" name="passport_number" id="passport_number" class="form-control" required>
-            </div>
-            <button type="submit" class="btn btn-success">Купить</button>
         </form>
     </div>
 </div>
