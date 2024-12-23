@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block title %}Добро пожаловать!{% endblock %}
+
+{% block content %}
+<style>
+    .welcome-bg {
+        background: url(https://learnenglishteens.britishcouncil.org/sites/teens/files/field/image/rs2769_186088062-low_0.jpg) no-repeat center center;
+        background-size: cover;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+    .welcome-bg::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)); /* Градиентный фон */
+    }
+    .welcome-content {
+        position: relative;
+        z-index: 1;
+        color: white;
+        text-align: center;
+        animation: fadeIn 1.5s ease-in-out;
+    }
+    .welcome-content h2 {
+        font-size: 3.5rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+        animation: slideInDown 1s ease-in-out;
+    }
+    .welcome-content p {
+        font-size: 1.5rem;
+        margin-bottom: 30px;
+        animation: slideInUp 1s ease-in-out;
+    }
+    .welcome-content .btn {
+        font-size: 1.25rem;
+        padding: 12px 25px;
+        border-radius: 30px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    }
+    .welcome-content .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+    .welcome-content .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+    .welcome-content .btn:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
+    .welcome-content .btn-primary:hover {
+        background-color: #0056b3;
+    }
+    .welcome-content .btn-success:hover {
+        background-color: #1e7e34;
+    }
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+    @keyframes slideInDown {
+        0% {
+            opacity: 0;
+            transform: translateY(-50px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    @keyframes slideInUp {
+        0% {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<div class="welcome-bg">
+    <div class="welcome-content">
+        <h2 class="display-4 fw-bold text-light">
+            <i class="bi bi-airplane-fill"></i> Добро пожаловать в систему продажи билетов!
+        </h2>
+        <p class="lead text-light">
+            Здесь вы можете просматривать доступные рейсы, покупать билеты и анализировать отчеты по продажам.
+        </p>
+        <div class="mt-4">
+            <a href="{% url 'route_list' %}" class="btn btn-primary btn-lg me-3">
+                <i class="bi bi-list"></i> Купить билет
+            </a>
+            <a href="{% url 'report' %}" class="btn btn-success btn-lg">
+                <i class="bi bi-bar-chart-fill"></i> Отчеты по продажам
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

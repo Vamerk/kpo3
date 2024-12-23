@@ -39,6 +39,11 @@
                 </tr>
             </thead>
             <tbody>
+            {% if not tickets_by_transport %}
+        <div class="alert alert-danger text-center mx-auto" role="alert">
+            <i class="bi bi-exclamation-triangle-fill "></i> Рейсов по вашим запросов на данный момент не существует
+        </div>
+    {% endif %}
                 {% for item in tickets_by_transport %}
                 <tr>
                     <td class="text-center">{{ item.route__transport_type__name }}</td>
@@ -65,6 +70,11 @@
                 </tr>
             </thead>
             <tbody>
+            {% if not popular_destinations %}
+        <div class="alert alert-danger text-center mx-auto" role="alert">
+            <i class="bi bi-exclamation-triangle-fill "></i> Рейсов по вашим запросов на данный момент не существует
+        </div>
+    {% endif %}
                 {% for item in popular_destinations %}
                 <tr>
                     <td class="text-center">{{ item.route__destination }}</td>

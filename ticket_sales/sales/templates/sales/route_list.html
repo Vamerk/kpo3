@@ -44,6 +44,11 @@
 
     <!-- Список рейсов -->
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% if not routes %}
+        <div class="alert alert-danger text-center mx-auto" role="alert">
+            <i class="bi bi-exclamation-triangle-fill "></i> Рейсов по вашим запросов на данный момент не существует
+        </div>
+    {% endif %}
         {% for route in routes %}
             <div class="col">
                 <div class="card shadow-sm h-100 bg-light border-primary">

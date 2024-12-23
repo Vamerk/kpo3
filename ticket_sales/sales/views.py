@@ -99,3 +99,7 @@ def report(request):
         'tickets_by_transport': tickets_by_transport,
         'popular_destinations': popular_destinations,
     })
+
+
+def head_page(request):
+    return render(request, 'sales/head.html')
