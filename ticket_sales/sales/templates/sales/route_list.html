@@ -7,6 +7,42 @@
     <h1 class="mb-4 text-center text-primary">
         <i class="bi bi-airplane"></i> Список рейсов
     </h1>
+
+    <!-- Форма для фильтров -->
+    <form method="GET" class="mb-4">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <label for="departure_date" class="form-label"><i class="bi bi-calendar3"></i> Дата отправления</label>
+                <input type="date" name="departure_date" id="departure_date" class="form-control" value="{{ request.GET.departure_date }}">
+            </div>
+            <div class="col-md-3">
+                <label for="destination" class="form-label"><i class="bi bi-geo-alt"></i> Пункт назначения</label>
+                <input type="text" name="destination" id="destination" class="form-control" value="{{ request.GET.destination }}">
+            </div>
+            <div class="col-md-3">
+                <label for="transport_type" class="form-label"><i class="bi bi-truck"></i> Вид транспорта</label>
+                <select name="transport_type" id="transport_type" class="form-select">
+                    <option value="">Все</option>
+                    {% for type in transport_types %}
+                        <option value="{{ type.id }}" {% if request.GET.transport_type == type.id|stringformat:"s" %}selected{% endif %}>
+                            {{ type.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+        </div>
+        <div class="d-grid gap-2 mt-3">
+            <button type="submit" class="btn btn-primary btn-lg">
+                <i class="bi bi-funnel"></i> Применить фильтры
+            </button>
+            <a href="{% url 'route_list' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-x-circle"></i> Сбросить фильтры
+            </a>
+        </div>
+    </form>
+
+    <!-- Список рейсов -->
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         {% for route in routes %}
             <div class="col">
