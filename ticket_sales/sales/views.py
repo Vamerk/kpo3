@@ -2,6 +2,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Route, Ticket, Client
 from .forms import TicketPurchaseForm, TicketFilterForm, TransportType
 from django.db.models import Count
+import qrcode
+from io import BytesIO
+from django.core.files import File
 
 
 def route_list(request):
@@ -52,21 +55,47 @@ def adout_page(request):
 
 def purchase_ticket(request, route_id):
     route = get_object_or_404(Route, id=route_id)
+
     if request.method == 'POST':
         form = TicketPurchaseForm(request.POST)
         if form.is_valid():
+            # Создаем клиента
             client = Client.objects.create(
                 full_name=form.cleaned_data['full_name'],
                 passport_series=form.cleaned_data['passport_series'],
                 passport_number=form.cleaned_data['passport_number']
             )
+
+            # Создаем билет
             ticket = Ticket.objects.create(route=route, client=client)
+
+            # Уменьшаем количество доступных мест
             route.available_seats -= 1
             route.save()
-            # Передаем ticket.id в redirect
+
+            # Генерация QR-кода
+            qr = qrcode.QRCode(
+                version=1,
+                error_correction=qrcode.constants.ERROR_CORRECT_L,
+                box_size=10,
+                border=4,
+            )
+            qr_data = f"Билет №{ticket.id}\nПассажир: {client.full_name}\nМаршрут: {route.transport_type} {route.departure_location} - {route.destination}\nДата: {route.departure_date}"
+            qr.add_data(qr_data)
+            qr.make(fit=True)
+
+            img = qr.make_image(fill_color="black", back_color="white")
+
+            # Сохраняем QR-код в медиафайлы
+            buffer = BytesIO()
+            img.save(buffer, format='PNG')
+            ticket.qr_code.save(f'ticket_{ticket.id}.png', File(buffer), save=True)
+
+            # Перенаправляем на страницу успешной покупки
             return redirect('success', ticket_id=ticket.id)
     else:
         form = TicketPurchaseForm()
+
     return render(request, 'sales/purchase_ticket.html', {'form': form, 'route': route})
 
 def success(request, ticket_id):

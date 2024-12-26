@@ -1,3 +1,4 @@
+
 from django.urls import path
 from . import views
 
@@ -9,5 +10,4 @@ urlpatterns = [
     path('about/', views.adout_page, name='about'),
     path('', views.head_page, name='head')
 ]
-
 

@@ -33,6 +33,7 @@ class Ticket(models.Model):
     route = models.ForeignKey(Route, on_delete=models.CASCADE)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     purchase_date = models.DateTimeField(auto_now_add=True)  # Дата покупки билета
+    qr_code = models.ImageField(upload_to='qr_codes/', blank=True, null=True)  # Поле для QR-кода
 
     def __str__(self):
         return f"Ticket for {self.client.full_name} on {self.route}"
