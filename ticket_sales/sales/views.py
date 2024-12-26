@@ -13,6 +13,7 @@ def route_list(request):
     departure_date = request.GET.get('departure_date')
     transport_type = request.GET.get('transport_type')
     destination = request.GET.get('destination')
+    departure = request.GET.get('departure_location')
     sort_by = request.GET.get('sort_by')
 
     # Применяем фильтры, только если они заданы
@@ -25,6 +26,9 @@ def route_list(request):
     if destination:
         filters['destination__icontains'] = destination
 
+    if departure:
+        filters['departure_location__icontains'] = departure
+
     # Получаем отфильтрованные маршруты
     routes = Route.objects.filter(**filters)
 
@@ -34,11 +38,13 @@ def route_list(request):
 
     # Уникальные пункты назначения для фильтра
     destinations = Route.objects.values_list('destination', flat=True).distinct()
+    departures = Route.objects.values_list('departure_location', flat=True).distinct()
 
     return render(request, 'sales/route_list.html', {
         'routes': routes,
         'transport_types': transport_types,
         'destinations': destinations,  # Передаем уникальные пункты назначения
+        'departures': departures
     })
 
 def adout_page(request):
