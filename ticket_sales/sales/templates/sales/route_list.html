@@ -17,12 +17,19 @@
             </div>
             <div class="col-md-3">
                 <label for="destination" class="form-label"><i class="bi bi-geo-alt"></i> Пункт назначения</label>
-                <input type="text" name="destination" id="destination" class="form-control" value="{{ request.GET.destination }}">
+                <select name="destination" id="destination" class="form-select">
+                    {% for destination in destinations %}
+                        <option value="{{ destination }}" {% if request.GET.destination == destination %}selected{% endif %}>
+                            {{ destination }}
+                        </option>
+                    {% endfor %}
+                </select>
+<!--                <input type="text" name="destination" id="destination" class="form-control" value="{{ request.GET.destination }}">-->
             </div>
             <div class="col-md-3">
                 <label for="transport_type" class="form-label"><i class="bi bi-truck"></i> Вид транспорта</label>
                 <select name="transport_type" id="transport_type" class="form-select">
-                    <option value="">Все</option>
+
                     {% for type in transport_types %}
                         <option value="{{ type.id }}" {% if request.GET.transport_type == type.id|stringformat:"s" %}selected{% endif %}>
                             {{ type.name }}
@@ -54,6 +61,7 @@
                 <div class="card shadow-sm h-100 bg-light border-primary">
                     <div class="card-body">
                         <h5 class="card-title text-uppercase text-primary">
+                            {{ route.departure_location }} - {{ route.destination }}<br>
                             <i class="bi bi-truck"></i> {{ route.transport_type.name }}
                         </h5>
                         <ul class="list-unstyled">

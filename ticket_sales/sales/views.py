@@ -11,31 +11,34 @@ def route_list(request):
     # Инициализируем фильтры
     filters = {}
     departure_date = request.GET.get('departure_date')
-    destination = request.GET.get('destination')
     transport_type = request.GET.get('transport_type')
+    destination = request.GET.get('destination')
     sort_by = request.GET.get('sort_by')
 
     # Применяем фильтры, только если они заданы
     if departure_date:
         filters['departure_date'] = departure_date
-    if destination:
-        filters['destination__icontains'] = destination
+
     if transport_type:
         filters['transport_type_id'] = transport_type
 
-    # Если фильтры не заданы, возвращаем пустой список
-    if not filters:
-        routes = Route.objects.none()  # Возвращает пустой QuerySet
-    else:
-        routes = Route.objects.filter(**filters)
+    if destination:
+        filters['destination__icontains'] = destination
+
+    # Получаем отфильтрованные маршруты
+    routes = Route.objects.filter(**filters)
 
     # Применяем сортировку, если она задана
     if sort_by:
         routes = routes.order_by(sort_by)
 
+    # Уникальные пункты назначения для фильтра
+    destinations = Route.objects.values_list('destination', flat=True).distinct()
+
     return render(request, 'sales/route_list.html', {
         'routes': routes,
         'transport_types': transport_types,
+        'destinations': destinations,  # Передаем уникальные пункты назначения
     })
 
 def adout_page(request):
