@@ -7,20 +7,28 @@
     <h1 class="mb-4 text-center text-primary">Отчет по продажам</h1>
 
     <!-- Форма фильтрации -->
-    <form method="get" class="card p-4 shadow-sm mb-5 bg-light">
+    <form method="get" class="mb-5">
         <div class="row g-3 align-items-end">
             <!-- Отображение полей фильтрации -->
             <div class="col-md-4">
-                <label for="filter1" class="form-label">Выберите транспорт</label>
-                {{ form.transport_type }}
+                <label for="id_transport_type" class="form-label">Выберите транспорт</label>
+                <select name="transport_type" id="id_transport_type" class="form-select form-select">
+                    <option value="" selected>---------</option>
+                    <option value="1">Самолет</option>
+                    <option value="2">Поезд</option>
+                    <option value="3">Автобус</option>
+                </select>
+
             </div>
             <div class="col-md-4">
-                <label for="filter2" class="form-label">Дата начала</label>
-                {{ form.start_date }}
+                <label for="id_start_date" class="form-label">Дата начала</label>
+                <input type="date" name="start_date" id="id_start_date" class="form-control"
+                       value="{{ request.GET.start_date }}">
             </div>
             <div class="col-md-4">
-                <label for="filter3" class="form-label">Дата окончания</label>
-                {{ form.end_date }}
+                <label for="id_end_date" class="form-label">Дата окончания</label>
+                <input type="date" name="end_date" id="id_end_date" class="form-control"
+                       value="{{ request.GET.end_date }}">
             </div>
             <div class="col-12">
                 <button type="submit" class="btn btn-primary w-100">Применить фильтры</button>
@@ -33,27 +41,22 @@
         <h2 class="mb-3 text-secondary">Количество проданных билетов по видам транспорта</h2>
         <table class="table table-hover table-bordered align-middle">
             <thead class="table-primary">
-                <tr>
-                    <th class="text-center">Вид транспорта</th>
-                    <th class="text-center">Количество проданных билетов</th>
-                </tr>
+            <tr>
+                <th class="text-center">Вид транспорта</th>
+                <th class="text-center">Количество проданных билетов</th>
+            </tr>
             </thead>
             <tbody>
-            {% if not tickets_by_transport %}
-        <div class="alert alert-danger text-center mx-auto" role="alert">
-            <i class="bi bi-exclamation-triangle-fill "></i> Рейсов по вашим запросов на данный момент не существует
-        </div>
-    {% endif %}
-                {% for item in tickets_by_transport %}
-                <tr>
-                    <td class="text-center">{{ item.route__transport_type__name }}</td>
-                    <td class="text-center">{{ item.total }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="2" class="text-center text-muted">Нет данных для отображения</td>
-                </tr>
-                {% endfor %}
+            {% for item in tickets_by_transport %}
+            <tr>
+                <td class="text-center">{{ item.route__transport_type__name }}</td>
+                <td class="text-center">{{ item.total }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2" class="text-center text-muted">Нет данных для отображения</td>
+            </tr>
+            {% endfor %}
             </tbody>
         </table>
     </div>
@@ -63,29 +66,25 @@
         <h2 class="mb-3 text-secondary">Популярные пункты назначения и виды транспорта</h2>
         <table class="table table-hover table-bordered align-middle">
             <thead class="table-success">
-                <tr>
-                    <th class="text-center">Пункт назначения</th>
-                    <th class="text-center">Вид транспорта</th>
-                    <th class="text-center">Количество билетов</th>
-                </tr>
+            <tr>
+                <th class="text-center">Пункт назначения</th>
+                <th class="text-center">Вид транспорта</th>
+                <th class="text-center">Количество билетов</th>
+            </tr>
             </thead>
             <tbody>
-            {% if not popular_destinations %}
-        <div class="alert alert-danger text-center mx-auto" role="alert">
-            <i class="bi bi-exclamation-triangle-fill "></i> Рейсов по вашим запросов на данный момент не существует
-        </div>
-    {% endif %}
-                {% for item in popular_destinations %}
-                <tr>
-                    <td class="text-center">{{ item.route__destination }}</td>
-                    <td class="text-center">{{ item.route__transport_type__name }}</td>
-                    <td class="text-center">{{ item.total }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="3" class="text-center text-muted">Нет данных для отображения</td>
-                </tr>
-                {% endfor %}
+
+            {% for item in popular_destinations %}
+            <tr>
+                <td class="text-center">{{ item.route__destination }}</td>
+                <td class="text-center">{{ item.route__transport_type__name }}</td>
+                <td class="text-center">{{ item.total }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="text-center text-muted">Нет данных для отображения</td>
+            </tr>
+            {% endfor %}
             </tbody>
         </table>
     </div>
